@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "noEmit": true
+  },
+  "include": ["src/**/*.d.ts", "host/index.ts", "tests/fixtures/host-api.ts", "src/host_boundary.test.ts"],
+  "exclude": ["node_modules", "dist", "build"]
+}

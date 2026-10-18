@@ -7,3 +7,12 @@ e55a4caa7a5401e22587a50ca87feaa96aad12e1:cockpit/test/fixtures/ssh/plain_ed25519
 e55a4caa7a5401e22587a50ca87feaa96aad12e1:cockpit/test/fixtures/ssh/encrypted_rsa:private-key:1
 3587db4cb7b91387440a9d6391b73e8776d11197:.orchestration/contracts/fixtures/pair_request.jsonl:generic-api-key:1
 3587db4cb7b91387440a9d6391b73e8776d11197:app/test/protocol_test.dart:generic-api-key:143
+
+# Same synthetic fixtures after the reviewed monorepo import; exact findings only.
+3278efcbf36912f43e4eec496028117aa1897d44:.orchestration/contracts/fixtures/pair_request.jsonl:generic-api-key:1
+3278efcbf36912f43e4eec496028117aa1897d44:app/test/protocol_test.dart:generic-api-key:331
+3278efcbf36912f43e4eec496028117aa1897d44:cockpit/test/data/db_secrets_migration_test.dart:generic-api-key:66
+3278efcbf36912f43e4eec496028117aa1897d44:cockpit/test/data/db_secrets_migration_test.dart:generic-api-key:77
+3278efcbf36912f43e4eec496028117aa1897d44:cockpit/test/fixtures/ssh/encrypted_ed25519:private-key:1
+3278efcbf36912f43e4eec496028117aa1897d44:cockpit/test/fixtures/ssh/encrypted_rsa:private-key:1
+3278efcbf36912f43e4eec496028117aa1897d44:cockpit/test/fixtures/ssh/plain_ed25519:private-key:1

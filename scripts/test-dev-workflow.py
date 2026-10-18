@@ -113,7 +113,8 @@ class WorkflowTests(unittest.TestCase):
         calls = self.calls()
         self.assertEqual([c['args'] for c in calls], [
             ['scripts/test-dev-workflow.py'], ['scripts/test-deploy-android.py'], ['scripts/test-installers.py'],
-            ['scripts/test-docker-publishers.py'], ['scripts/check-docs.py', '--self-test'],
+            ['scripts/test-docker-publishers.py'], ['scripts/test-build-cockpit.py'],
+            ['scripts/check-docs.py', '--self-test'],
             ['scripts/check-docs.py']])
         self.assertTrue(all(c['cwd'] == str(self.root) for c in calls))
 

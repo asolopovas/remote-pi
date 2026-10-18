@@ -11,12 +11,25 @@ Requirements: Node **22.19+**, pnpm and the [Pi coding agent](https://github.com
 ```sh
 pnpm install --frozen-lockfile
 pnpm typecheck
-pnpm test
 pnpm build
-pi install .
+pnpm test
+pi install ./host
 ```
 
 This checkout is source-only; its package is marked private. The [workspace configuration](pnpm-workspace.yaml) supplies a scoped security override that npm consumers do not inherit. Do not use `npm install -g .`, pack/publish it to npm, or substitute the upstream `remote-pi` distribution. Building does not install a service.
+
+`host/` is the private Pi package entry: it loads `src/index.ts` through Pi’s TypeScript/Jiti loader, which supplies the host SDK, TUI and TypeBox instances. Use the installed Pi **1.3.0 bundled CLI** (or validate your loader with the test below). Do not register the parent package or `dist/index.js` as a host extension: those retain the legacy 0.79.10 standalone Node dependency closure. The peer-only child is not independently distributable; keep it inside this installed checkout.
+
+For a one-process trial use `pi --no-extensions -e /absolute/path/to/pi-extension/host`. Existing parent-package registrations must be removed explicitly at an idle-safe boundary before installing `./host`; do not load both. This does not migrate personal settings or restart existing sessions. The standalone CLI/supervisor remain built Node programs; new supervisor Pi children use the host source entry with `--no-extensions` to exclude implicit registrations (including a remaining legacy parent registration). Explicitly selected source-host commands resolve service/CLI executables from this checkout’s built `dist/`, never nonexistent `src/*.js` files. The managed runtime root remains **pi-extension/** and its frozen [API3 snapshot](docs/secure-launcher.md#managed-runtime-packaging-api3) is unchanged.
+
+To verify an installed host loader without a provider turn, credentials or relay, run from this directory after building:
+
+```sh
+REMOTE_PI_TEST_HOST_CLI=/absolute/path/to/pi-coding-agent/dist/bundle/cli.js \
+  pi-durable-subagents hold machine -- pnpm exec vitest run src/host_boundary.test.ts --maxWorkers=1
+```
+
+The test installs only into temporary settings, checks native-resolution provenance and direct identity against the host’s own export table, exercises source service/CLI resolvers without installation/linking, excludes synthetic legacy global/project registrations with the supervisor’s real arguments, and checks defaults/image/TUI/tool-schema APIs using RPC `get_state` only. Without the override it uses the already prepared managed Pi 1.3.0 CLI as the test host; it never prepares/replaces a snapshot.
 
 In an interactive Pi session:
 

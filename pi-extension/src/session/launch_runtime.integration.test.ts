@@ -8,7 +8,7 @@ import { LaunchRegistry } from "./launch_store.js";
 import { rpcSpawnArgs } from "../daemon/rpc_child.js";
 import { launchSandbox } from "./launch_sandbox.js";
 
-test.each(["modern", "bridge", "old"])("real modern bundled CLI selects recognized Sol metadata without a model turn (runtime=%s)", async runtime => {
+test.each(["modern", "bridge", "old", "source-host"])("real modern bundled CLI selects recognized Sol metadata without a model turn (runtime=%s)", async runtime => {
   const root = await mkdtemp(join(tmpdir(), "modern-model-"));
   const project = join(root, "project"), agent = join(root, "agent");
   await mkdir(project); await mkdir(agent);
@@ -16,7 +16,10 @@ test.each(["modern", "bridge", "old"])("real modern bundled CLI selects recogniz
   await writeFile(join(agent, "settings.json"), JSON.stringify({ defaultProvider: "openai-codex", defaultModel: "gpt-6.1-sol" }));
   vi.stubEnv("PI_CODING_AGENT_DIR", agent);
   const entry = await new LaunchRegistry(join(root, "store")).add("fixture", project, [project]);
-  const plan = await launchSandbox(entry, resolve("dist/index.js"), runtime === "bridge" ? rpcSpawnArgs(resolve("dist/index.js"), "fixture", false).filter(a => a !== "--approve") : ["--mode", "rpc"], "fixture");
+  const source = runtime === "source-host";
+  const extension = resolve(source ? "src/index.ts" : "dist/index.js");
+  const explicitEntry = resolve(source ? "host/index.ts" : "dist/index.js");
+  const plan = await launchSandbox(entry, extension, runtime === "bridge" || source ? rpcSpawnArgs(explicitEntry, "fixture", false).filter(a => a !== "--approve") : ["--mode", "rpc"], "fixture");
   let child: ReturnType<typeof spawn> | undefined;
   try {
     // Child cannot contact any provider, production relay, or OAuth endpoint.
@@ -27,7 +30,7 @@ test.each(["modern", "bridge", "old"])("real modern bundled CLI selects recogniz
       // Reproduce the original settings-only selection on cached 0.79.10.
       args = [...args.slice(0, cut + 1), process.execPath, join(oldRoot, "dist/cli.js"), "--mode", "rpc", "--no-extensions", "--no-skills", "--no-prompt-templates", "--no-themes", "--no-approve", "--no-session"];
     }
-    child = spawn(plan.command, ["--unshare-net", ...args], { env: plan.env, stdio: ["pipe", "pipe", "pipe", "pipe", ...plan.fds] });
+    child = spawn(plan.command, ["--unshare-net", ...args], { env: source ? { ...plan.env, JITI_DEBUG: "1" } : plan.env, stdio: ["pipe", "pipe", "pipe", "pipe", ...plan.fds] });
     let output = "", error = "";
     child.stdout!.on("data", b => { if (output.length < 65536) output += b; });
     child.stderr!.on("data", b => { if (error.length < 65536) error += b; });
@@ -39,6 +42,13 @@ test.each(["modern", "bridge", "old"])("real modern bundled CLI selects recogniz
       return output.split("\n").some(line => { try { return JSON.parse(line).id === "probe"; } catch { return false; } });
     }, { timeout: 10000 }).toBe(true);
     const state = output.split("\n").map(line => { try { return JSON.parse(line); } catch { return {}; } }).find(s => s.id === "probe");
+    if (source) {
+      const log = error.replace(/\x1b\[[0-9;]*m/g, "");
+      expect(log).toContain(resolve("host/index.ts"));
+      expect(log).toContain(resolve("src/index.ts"));
+      for (const name of ["@earendil-works/pi-coding-agent", "@earendil-works/pi-tui", "typebox"]) expect(log).toContain(`[virtual] ${name}`);
+      expect(log).not.toMatch(/\.pnpm\/(?:@earendil-works\+pi-|typebox@)|Failed to load extension/);
+    }
     if (runtime === "old") {
       expect(state).toMatchObject({ success: true, data: { model: { provider: "openai-codex", id: "gpt-5.5" } } });
       expect(state.data.model.id).not.toBe("gpt-6.1-sol");

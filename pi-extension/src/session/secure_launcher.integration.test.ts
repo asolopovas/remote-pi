@@ -17,11 +17,17 @@ vi.mock("node:child_process", async importOriginal => {
   return { ...actual, spawn: ((command: string, args: string[], options: import("node:child_process").SpawnOptions) => actual.spawn(command, command === "/bin/bwrap" ? ["--unshare-net", ...args] : args, options)) };
 });
 
-test("real sandbox Pi + parent-only signing/rooms, gated dispatch, direct child control and Lock, owner shutdown", async () => {
+test.each(["dist", "src"])("staged %s sandbox Pi + parent-only signing/rooms, gated dispatch, direct child control and Lock, owner shutdown", async entryKind => {
   const root = await mkdtemp(join(tmpdir(), "secure-launch-integration-"));
   // Freeze a built installed-package layout, with only the existing cached deps.
   const release = join(root, "installed-release"); await mkdir(release);
   await cp(resolve("dist"), join(release, "dist"), { recursive: true });
+  if (entryKind === "src") {
+    // Source hosts pass src/index.ts to managed launch (import.meta.url), not
+    // host/index.ts. Preserve the whole source-only package boundary in stage.
+    await cp(resolve("src"), join(release, "src"), { recursive: true });
+    await cp(resolve("host"), join(release, "host"), { recursive: true });
+  }
   await mkdir(join(release, "build"));
   await cp(resolve("build/managed-runtime"), join(release, "build/managed-runtime"), { recursive: true });
   await cp(resolve("package.json"), join(release, "package.json"));
@@ -59,14 +65,14 @@ test("real sandbox Pi + parent-only signing/rooms, gated dispatch, direct child 
   await symlink(settings, join(credentials, "settings.json"));
   vi.stubEnv("PI_CODING_AGENT_DIR", credentials);
   let paired = true;
-  const launcher = new SecureLauncher({ cwd: project, rootRoom: () => "actual-published-root-not-derived-from-project", extensionPath: join(release, "dist/index.js"), registry, keypair: async () => keypair, paired: async () => paired, current: () => true });
+  const launcher = new SecureLauncher({ cwd: project, rootRoom: () => "actual-published-root-not-derived-from-project", extensionPath: join(release, entryKind === "src" ? "src/index.ts" : "dist/index.js"), registry, keypair: async () => keypair, paired: async () => paired, current: () => true });
   const handle = (request: LauncherRequest, owner = "owner-a") => launcher.handle(owner, decodeLauncherRequest(request), async () => paired);
   const security = (type: "launcher_unlock" | "launcher_lock" | "launcher_shutdown", id: string): LauncherRequest => ({ type, id, launcher_id: launcher.agents.launcherId, epoch: launcher.security.epoch, ...(type === "launcher_unlock" ? { pin: "654321" } : {}) } as LauncherRequest);
   try {
     expect(await handle({ type: "project_list", id: "locked-list" })).toMatchObject({ type: "error" });
     expect(await handle({ type: "project_launch", id: "absent-pin", launcher_id: launcher.agents.launcherId, epoch: launcher.security.epoch, project_id: entry.id })).toMatchObject({ type: "error" });
     await setupLaunchPin("654321", registry.dir);
-    expect(await handle(security("launcher_unlock", "unlock"))).toMatchObject({ type: "launcher_status_result", status: { unlocked: true } });
+    expect(await handle(security("launcher_unlock", "unlock"))).toMatchObject({ type: "launcher_status_result", status: { launcher_api: 3, unlocked: true } });
     expect(await handle({ type: "project_list", id: "projects" })).toEqual({ type: "project_list_result", in_reply_to: "projects", projects: [{ project_id: entry.id, name: "fixture", cwd: project, allowed_folders: [project] }] });
     expect(await launcher.legacy("owner-a", { type: "agent_launch", id: "bypass", launcher_id: launcher.agents.launcherId, cwd: "/tmp" }, async () => true)).toMatchObject({ type: "error" });
     const originalList = registry.list.bind(registry);

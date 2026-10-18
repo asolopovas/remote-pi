@@ -74,6 +74,7 @@ tooling() {
   run "$ROOT" python3 scripts/test-deploy-android.py
   run "$ROOT" python3 scripts/test-installers.py
   run "$ROOT" python3 scripts/test-docker-publishers.py
+  run "$ROOT" python3 scripts/test-build-cockpit.py
   run "$ROOT" python3 scripts/check-docs.py --self-test
   run "$ROOT" python3 scripts/check-docs.py
 }

@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import { existsSync, lstatSync, mkdtempSync, readFileSync, readlinkSync, rmSync, writeFileSync, mkdirSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { basename, dirname, isAbsolute, join } from "node:path";
+import { basename, dirname, isAbsolute, join, resolve } from "node:path";
 
 /** POSIX-only describes: features the Bloco C (plan/40) intentionally skips on
  *  Windows (symlinks/`~/.local/bin`, systemd, launchd). */
@@ -47,9 +47,8 @@ describe("findNodeBinary", () => {
 });
 
 describe("findSupervisorScript", () => {
-  test("ends with bin/supervisord.js (whatever distRoot is)", () => {
-    // `join` yields the platform separator (`/` POSIX, `\` win32).
-    expect(findSupervisorScript().endsWith(join("bin", "supervisord.js"))).toBe(true);
+  test("source module resolves the built dist supervisor", () => {
+    expect(findSupervisorScript()).toBe(resolve("dist/bin/supervisord.js"));
   });
 });
 
@@ -245,6 +244,7 @@ describe("findRemotePiScript", () => {
   test("resolves to dist/index.js sibling of supervisord", () => {
     const p = findRemotePiScript();
     expect(basename(p)).toBe("index.js");
+    expect(p).toBe(resolve("dist/index.js"));
     // Same dist root as supervisord: dirname(index.js) === dirname(dist/bin).
     expect(dirname(p)).toBe(dirname(dirname(findSupervisorScript())));
   });

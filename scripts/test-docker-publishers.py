@@ -21,11 +21,14 @@ class PublisherTests(unittest.TestCase):
         self.log = self.work / 'calls'
         self.env = {**os.environ, 'HOME': str(self.work),
                     'PATH': f'{self.bin}:/usr/bin:/bin', 'CALLS': str(self.log)}
-        self.env.pop('DOCKER_IMAGE', None)
+        for key in ('DOCKER_IMAGE', 'NEXT_PUBLIC_REPOSITORY_URL', 'NEXT_PUBLIC_SITE_URL'):
+            self.env.pop(key, None)
         # No real Docker, build, login or network operation can run in these tests.
         docker = self.bin / 'docker'
         docker.write_text('''#!/usr/bin/python3
 import json, os, sys
+if os.getcwd() != os.environ['EXPECTED_CWD']:
+    sys.exit(96)
 with open(os.environ['CALLS'], 'a') as log:
     log.write(json.dumps(sys.argv[1:]) + '\\n')
 if sys.argv[1:3] == ['buildx', 'inspect']:
@@ -45,7 +48,7 @@ if sys.argv[1:3] == ['buildx', 'build']:
             env['DOCKER_IMAGE'] = image
         return subprocess.run(
             ['/bin/bash', str(ROOT / project / 'push-docker.sh'), *args],
-            cwd=self.work, env={**self.env, **env}, text=True,
+            cwd=self.work, env={**self.env, **env, 'EXPECTED_CWD': str(ROOT / project)}, text=True,
             capture_output=True, check=False)
 
     def calls(self):
@@ -94,10 +97,29 @@ if sys.argv[1:3] == ['buildx', 'build']:
                                     self.fail('Cargo.toml is missing its version')
                                 version = 'v' + match[1]
                             tags = ['--tag', f'{image}:{version}'] if version else []
+                            public_args = (['--build-arg', 'NEXT_PUBLIC_REPOSITORY_URL=',
+                                            '--build-arg', 'NEXT_PUBLIC_SITE_URL=']
+                                           if project == 'site' else [])
                             expected.append(['buildx', 'build', '--platform',
                                              'linux/amd64,linux/arm64', *tags,
-                                             '--tag', f'{image}:latest', '--push', '.'])
+                                             '--tag', f'{image}:latest', *public_args, '--push', '.'])
                             self.assertEqual(self.calls(), expected)
+
+    def test_site_forwards_only_exact_public_values(self):
+        values = {
+            'NEXT_PUBLIC_REPOSITORY_URL': 'https://github.com/owned/repository?literal=$value & x="y"',
+            'NEXT_PUBLIC_SITE_URL': 'https://site.example/path with spaces;$(touch nope)',
+        }
+        result = self.run_publisher('site', 'independent/publisher', **values,
+                                    UPLOAD_TOKEN='secret-upload', DOCKER_PASSWORD='secret-password',
+                                    NEXT_PUBLIC_UNDOCUMENTED='not-allowed')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        build = self.calls()[-1]
+        forwarded = [build[i + 1] for i, arg in enumerate(build) if arg == '--build-arg']
+        self.assertEqual(forwarded, [f'{key}={value}' for key, value in values.items()])
+        self.assertNotIn('secret-', json.dumps(self.calls()))
+        self.assertNotIn('not-allowed', json.dumps(self.calls()))
+        self.assertFalse((self.work / 'nope').exists())
 
     def test_build_failure_is_not_reported_as_success(self):
         for project in PROJECTS:

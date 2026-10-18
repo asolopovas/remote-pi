@@ -52,4 +52,4 @@ docker run --rm -p 127.0.0.1:3000:3000 remote-pi-site
 
 Pass an owned `NEXT_PUBLIC_SITE_URL` build argument only when you have one. Environment files, local agent state and private key material are excluded from the [Docker context](.dockerignore). No Docker build/deployment is implied by a successful Next.js build.
 
-The [image publisher](push-docker.sh) requires an explicit destination under the [publisher guards](../SECURITY.md#local-publisher-guards). Use an owned TLS proxy and keep credentials outside Git. Follow [development rules](CLAUDE.md) and the shared [security gates](../SECURITY.md).
+The [image publisher](push-docker.sh) requires an explicit destination under the [publisher guards](../SECURITY.md#local-publisher-guards). It forwards only `NEXT_PUBLIC_REPOSITORY_URL` and `NEXT_PUBLIC_SITE_URL` from the environment as public build arguments, with empty defaults; no other environment variables become build arguments. Use an owned TLS proxy and keep credentials outside Git. Follow [development rules](CLAUDE.md) and the shared [security gates](../SECURITY.md).

@@ -16,19 +16,19 @@ import { RpcChild, busyTransition, resolvePiBin, resolvePiSpawn, _npmShimTarget,
 describe("rpcSpawnArgs", () => {
   test("includes --continue so a restart resumes the latest session (not a new one)", () => {
     expect(rpcSpawnArgs("/path/to/dist/index.js")).toEqual([
-      "--mode", "rpc", "--approve", "--continue", "-e", "/path/to/dist/index.js",
+      "--mode", "rpc", "--approve", "--no-extensions", "--continue", "-e", "/path/to/dist/index.js",
     ]);
   });
 
   test("pins the session display name via --name when one is given", () => {
     expect(rpcSpawnArgs("/path/to/dist/index.js", "PC")).toEqual([
-      "--mode", "rpc", "--approve", "--continue", "--name", "PC", "-e", "/path/to/dist/index.js",
+      "--mode", "rpc", "--approve", "--no-extensions", "--continue", "--name", "PC", "-e", "/path/to/dist/index.js",
     ]);
   });
 
   test("can omit --continue for one daemon fresh-session restart", () => {
     expect(rpcSpawnArgs("/path/to/dist/index.js", "PC", false)).toEqual([
-      "--mode", "rpc", "--approve", "--name", "PC", "-e", "/path/to/dist/index.js",
+      "--mode", "rpc", "--approve", "--no-extensions", "--name", "PC", "-e", "/path/to/dist/index.js",
     ]);
   });
 

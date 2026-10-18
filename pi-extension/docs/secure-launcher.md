@@ -29,12 +29,12 @@ Before launch, writable roots are descriptor-pinned and scanned without followin
 
 A usable **stored** Pi model credential in `PI_CODING_AGENT_DIR/auth.json` (default `~/.pi/agent/auth.json`) must exist and be private 0600. Use local Pi `/login` if needed; no credentials are invented. Both global `defaultProvider` and `defaultModel` must be configured; only that provider's credential is copied. Missing/partial defaults fail before a child is admitted. Only validated `defaultProvider`/`defaultModel` settings accompany it. The fixed host `settings.json` may be a dotfiles symlink: resolve it locally, then open the canonical final path with `O_NOFOLLOW` and validate the descriptor (regular file, current user, at most 128 KiB, not world-writable). Normal 0664 public settings remain supported without chmod or mutation; reads remain bounded even if a file grows. The canonical settings file and agent directory cannot be included in writable project roots. No remote-supplied settings path is accepted. `auth.json` remains nonsymlink/private; settings compatibility never relaxes credential checks. Literal API keys and OAuth records are supported; host credential commands, environment-only/ambient credentials, arbitrary `models.json`, skills/packages/custom providers and project extensions/settings are not inherited. OAuth refreshes affect only the private child copy. Model selection on the child can select models whose copied provider credential is usable.
 
-For a **future new host process**, not a reload of existing agents, use the operator's explicit trusted endpoint. Example from the intended host working directory, with built extension and an already installed compatible Pi:
+For a **future new host process**, not a reload of existing agents, use the operator's explicit trusted endpoint. Example from the intended host working directory, with the [source host entry](../README.md#build-and-install-this-source) and an already installed compatible Pi:
 
 ```sh
 REMOTE_PI_RELAY=https://your-relay.example \
 REMOTE_PI_DIRECT_CONFIG='{"agent_name":"phone-launch-host","auto_start_relay":true}' \
-pi -e /absolute/path/to/pi-extension/dist/index.js
+pi --no-extensions -e /absolute/path/to/pi-extension/host
 ```
 
 This sets a process-local endpoint override, not global configuration. HTTP(S) is the extension configuration form; HTTPS derives WSS internally. Do not disable TLS validation. The phone must use the same Relay endpoint and select this host room. If restored Relay membership does not include its current machine/Owner relationship, reconcile membership explicitly on the phone/operator side; this component does not migrate/change existing pairings. Children reuse parent-owned authenticated machine identity/Owner membership and do **not** need separate QR pairing. No production launch/configuration/activation was performed by implementation tests.
@@ -197,4 +197,4 @@ Real CLI fixtures use synthetic credentials and a disconnected child network
 namespace, issue `get_state` only (no model turn), and keep the signed loopback
 parent proxy outside that namespace. They prove old0.79.10 fallback, modern Sol
 capabilities and full managed preload/publication/control/fixture-Stop behavior.
-No production relay, provider call, actual credentials or user process is needed.
+The source-host entry is also exercised under bubblewrap with host-module provenance checks; staged source and compiled layouts both run the full API3 parent-mediated lifecycle fixture. No production relay, provider call, actual credentials or user process is needed.

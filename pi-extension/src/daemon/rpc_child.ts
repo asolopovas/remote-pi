@@ -189,12 +189,13 @@ function parseGetStateResponse(line: string): { id?: string; isStreaming?: boole
  * non-interactive, so without an override Pi resolves an untrusted project
  * folder (any folder with `.pi/` or CLAUDE.md/AGENTS.md) to NOT trusted and
  * silently skips its `.pi/settings.json` (model/provider/keys), instructions,
- * resources and project extensions — the daemon then comes up with no model
+ * resources — the daemon then comes up with no model
  * and fails on the first turn. The operator already authorized this folder by
  * registering/launching a daemon in it, so `--approve` (trust-for-this-run) is
- * the correct non-interactive stance. (Does NOT affect the separate "extension
- * loaded twice" conflict, which comes from the extension being BOTH installed
- * in ~/.pi/agent/extensions or cwd/.pi/extensions AND passed via `-e`.)
+ * the correct non-interactive stance. `--no-extensions` disables implicit
+ * global/project/built-in extensions while the explicit `-e` still loads this
+ * checkout's host entry. Otherwise a legacy registration can load a second
+ * runtime closure and duplicate tools/lifecycle handlers alongside source.
  */
 export function rpcSpawnArgs(
   extensionPath: string,
@@ -204,6 +205,7 @@ export function rpcSpawnArgs(
   return [
     "--mode", "rpc",
     "--approve",
+    "--no-extensions",
     ...(useContinue ? ["--continue"] : []),
     ...(sessionName ? ["--name", sessionName] : []),
     "-e", extensionPath,

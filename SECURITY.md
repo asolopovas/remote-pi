@@ -45,7 +45,7 @@ Before using installers, updates or manual release procedures, configure an expl
 
 ## Local publisher guards
 
-These scripts fail before activity unless an explicit destination is supplied. Syntax validation does not establish ownership; verify the publisher account and destination authorization yourself.
+These scripts fail before activity unless an explicit destination is supplied. Syntax validation does not establish ownership; verify the publisher account and destination authorization yourself. The Docker publishers require this monorepo checkout and use the root-owned [destination validator](scripts/docker-image-destination.sh).
 
 | Entry point | Required destination |
 |---|---|

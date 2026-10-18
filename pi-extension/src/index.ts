@@ -3,7 +3,7 @@
  * pi-extension — remote-pi slash commands + AgentBridge wiring
  *
  * Exported as ExtensionFactory (default export) to be loaded by Pi SDK:
- *   pi -e $(pwd)/dist/index.js
+ *   pi -e $(pwd)/host
  *
  * State machine:  idle → started → paired
  *   /remote-pi start   connects to relay (idle → started)
@@ -4141,7 +4141,7 @@ async function _cronLog(rest: string, ctx: Pick<ExtensionContext, "ui">): Promis
 /**
  * `linkCli` controls whether we symlink `remote-pi` + `pi-supervisord`
  * into `~/.local/bin/`. The slash-command path passes `true` (user is
- * inside Pi's TUI — they installed via `pi install npm:remote-pi` and
+ * inside Pi's TUI — they installed via `pi install ./host` and
  * need us to expose the CLI for them). The standalone-CLI path passes
  * `false` because the user is already running our binary from PATH (they
  * did `npm install -g remote-pi`), so re-linking would point their
@@ -5623,6 +5623,7 @@ if (_isDirectRun()) {
   } else {
     console.log([
       "Usage: remote-pi <command>",
+      "Host extension: pi install ./host (from pi-extension/; see README.md)",
       "",
       "Daemon registry:",
       "  create <cwd> [--name \"Name\"]   Register a folder as a daemon",

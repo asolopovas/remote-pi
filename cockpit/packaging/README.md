@@ -28,6 +28,8 @@ flutter build macos --release
 fastforge package --platform macos --targets dmg
 ```
 
+The optional macOS [local build wrapper](../../scripts/build-cockpit.sh) builds/tests the CLI, builds the app and verifies its signature without installing by default. Only `--install` copies the CLI to `~/.cockpit/bin` and the app to `~/Applications` (or `--install --dest <directory>`), after all checks succeed. It does not patch shared Pub dependencies. Offline wrapper regressions run via `make test-tooling` from the monorepo root; Linux/Windows packaging remains the native flow below.
+
 Before distribution, sign the app and nested helpers/frameworks with your Developer ID and hardened runtime, create/sign the DMG, submit it using `xcrun notarytool submit --wait` with privately stored credentials, and staple the accepted ticket. Verify both the app and final artifact:
 
 ```sh

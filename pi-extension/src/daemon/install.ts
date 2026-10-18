@@ -42,37 +42,19 @@ export function detectPlatform(): SupervisorPlatform {
 
 // ── Path resolution ────────────────────────────────────────────────────────
 
-/**
- * Absolute path to the supervisor's compiled entry. We resolve from
- * `import.meta.url` (this file's location) since wherever the daemon
- * module lives, `bin/supervisord.js` is a sibling of `daemon/` under
- * `dist/`.
- *
- * After build: `dist/daemon/install.js` → `dist/bin/supervisord.js`.
- * In dev (`tsx`): same path resolution still lands inside `src/`, which
- * isn't directly runnable by `node` — dev install isn't expected.
- */
-export function findSupervisorScript(): string {
-  const here = fileURLToPath(import.meta.url);          // dist/daemon/install.js
-  const daemonDir = dirname(here);                       // dist/daemon
-  const distRoot = dirname(daemonDir);                   // dist
-  return resolve(distRoot, "bin/supervisord.js");
+/** Package root is stable for both src/daemon/install.ts and dist/daemon/install.js. */
+function packageRoot(): string {
+  return resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 }
 
-/**
- * Absolute path to the extension's CLI entry (`dist/index.js`). This is
- * the file we symlink to `~/.local/bin/remote-pi` so the user can run
- * `remote-pi <subcommand>` from any shell after installing the extension
- * through Pi (`pi install npm:remote-pi`).
- *
- * Same resolution strategy as `findSupervisorScript`: from
- * `dist/daemon/install.js` → `dist/index.js`.
- */
+/** Always select a built Node executable, including when Pi loads source via Jiti. */
+export function findSupervisorScript(): string {
+  return resolve(packageRoot(), "dist/bin/supervisord.js");
+}
+
+/** Built CLI target for the optional local binary link; never link source .js paths. */
 export function findRemotePiScript(): string {
-  const here = fileURLToPath(import.meta.url);          // dist/daemon/install.js
-  const daemonDir = dirname(here);                       // dist/daemon
-  const distRoot = dirname(daemonDir);                   // dist
-  return resolve(distRoot, "index.js");
+  return resolve(packageRoot(), "dist/index.js");
 }
 
 export function findNodeBinary(): string {
@@ -88,8 +70,7 @@ export function findTemplate(name: "systemd" | "launchd" | "taskscheduler" | "vb
   // From `dist/daemon/install.js` go up two levels and into
   // `service-templates/`. In the published npm tarball the layout is the
   // same — `service-templates/` is sibling to `dist/`.
-  const here = fileURLToPath(import.meta.url);          // dist/daemon/install.js
-  const pkgRoot = resolve(dirname(dirname(dirname(here))));  // package root
+  const pkgRoot = packageRoot();
   const file =
     name === "systemd" ? "systemd.service.template" :
     name === "launchd" ? "launchd.plist.template" :
