@@ -1,0 +1,74 @@
+{
+  "note": "Synthetic constants, no real device/owner. Responses are alternative outcomes for the same nonce, not a sequence of duplicate replies.",
+  "pc_peer": "AgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgI=",
+  "owner_peer": "AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE=",
+  "target_room": "routing-A",
+  "requester_registered_room": "phone-main",
+  "frames": [
+    {
+      "label": "request-delivered-to-extension",
+      "wire": {
+        "peer": "AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE=",
+        "room": "phone-main",
+        "ct": "eyJ0eXBlIjoicm9vbV9kaXNwbGF5X3JlcXVlc3QiLCJpZCI6ImNjY2NjY2NjLWNjY2MtNGNjYy04Y2NjLTAwMDAwMDAwMDAwMSIsInJvb21faWQiOiJyb3V0aW5nLUEifQ=="
+      },
+      "inner": {
+        "type": "room_display_request",
+        "id": "cccccccc-cccc-4ccc-8ccc-000000000001",
+        "room_id": "routing-A"
+      }
+    },
+    {
+      "label": "verified-name",
+      "wire": {
+        "peer": "AgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgI=",
+        "room": "routing-A",
+        "ct": "eyJ0eXBlIjoicm9vbV9kaXNwbGF5X3NuYXBzaG90IiwiaW5fcmVwbHlfdG8iOiJjY2NjY2NjYy1jY2NjLTRjY2MtOGNjYy0wMDAwMDAwMDAwMDEiLCJyb29tX2lkIjoicm91dGluZy1BIiwiZGlzcGxheSI6eyJuYXRpdmVfc2Vzc2lvbl9pZCI6ImFhYWFhYWFhLWFhYWEtNGFhYS04YWFhLWFhYWFhYWFhYWFhYSIsImVwb2NoIjoiYmJiYmJiYmItYmJiYi00YmJiLThiYmItYmJiYmJiYmJiYmJiIiwicmV2aXNpb24iOjEsIm5hbWUiOiJEZXNrdG9wIEEifX0="
+      },
+      "inner": {
+        "type": "room_display_snapshot",
+        "in_reply_to": "cccccccc-cccc-4ccc-8ccc-000000000001",
+        "room_id": "routing-A",
+        "display": {
+          "native_session_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "epoch": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+          "revision": 1,
+          "name": "Desktop A"
+        }
+      }
+    },
+    {
+      "label": "verified-reset",
+      "wire": {
+        "peer": "AgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgI=",
+        "room": "routing-A",
+        "ct": "eyJ0eXBlIjoicm9vbV9kaXNwbGF5X3NuYXBzaG90IiwiaW5fcmVwbHlfdG8iOiJjY2NjY2NjYy1jY2NjLTRjY2MtOGNjYy0wMDAwMDAwMDAwMDEiLCJyb29tX2lkIjoicm91dGluZy1BIiwiZGlzcGxheSI6eyJuYXRpdmVfc2Vzc2lvbl9pZCI6ImFhYWFhYWFhLWFhYWEtNGFhYS04YWFhLWFhYWFhYWFhYWFhYSIsImVwb2NoIjoiYmJiYmJiYmItYmJiYi00YmJiLThiYmItYmJiYmJiYmJiYmJiIiwicmV2aXNpb24iOjIsIm5hbWUiOm51bGx9fQ=="
+      },
+      "inner": {
+        "type": "room_display_snapshot",
+        "in_reply_to": "cccccccc-cccc-4ccc-8ccc-000000000001",
+        "room_id": "routing-A",
+        "display": {
+          "native_session_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "epoch": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+          "revision": 2,
+          "name": null
+        }
+      }
+    },
+    {
+      "label": "unavailable",
+      "wire": {
+        "peer": "AgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgI=",
+        "room": "routing-A",
+        "ct": "eyJ0eXBlIjoicm9vbV9kaXNwbGF5X3NuYXBzaG90IiwiaW5fcmVwbHlfdG8iOiJjY2NjY2NjYy1jY2NjLTRjY2MtOGNjYy0wMDAwMDAwMDAwMDEiLCJyb29tX2lkIjoicm91dGluZy1BIiwiZGlzcGxheSI6bnVsbH0="
+      },
+      "inner": {
+        "type": "room_display_snapshot",
+        "in_reply_to": "cccccccc-cccc-4ccc-8ccc-000000000001",
+        "room_id": "routing-A",
+        "display": null
+      }
+    }
+  ]
+}

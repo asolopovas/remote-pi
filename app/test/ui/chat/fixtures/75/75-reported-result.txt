@@ -1,0 +1,14 @@
+Script completed
+Wall time 16.2 seconds
+Output:
+
+==> text 1/4 <==
+{"output":"Downloading sentencepiece (1.3MiB)\n Downloaded sentencepiece\nInstalled 1 package in 11ms\nHEY PC ['▁HE', 'Y', '▁P', 'C']\nHEY P C ['▁HE', 'Y', '▁P', '▁C']\nHEY P.C. ['▁HE', 'Y', '▁P', '.', 'C', '.']\ngigaspeech-3.3M-2024-01-01 0.25 1.5 wake-only []\ngigaspeech-3.3M-2024-01-01 0.25 1.5 wake-weather []\ngigaspeech-3.3M-2024-01-01 0.25 1.5 compound []\ngigaspeech-3.3M-2024-01-01 0.25 1.5 negative []\ngigaspeech-3.3M-2024-01-01 0.25 1.5 stop-music []\ngigaspeech-3.3M-2024-01-01 0.15 3 wake-only []\ngigaspeech-3.3M-2024-01-01 0.15 3 wake-weather [('hey_pc', 1.09)]\ngigaspeech-3.3M-2024-01-01 0.15 3 compound []\ngigaspeech-3.3M-2024-01-01 0.15 3 negative []\ngigaspeech-3.3M-2024-01-01 0.15 3 stop-music []\ngigaspeech-3.3M-2024-01-01 0.05 5 wake-only []\ngigaspeech-3.3M-2024-01-01 0.05 5 wake-weather []\ngigaspeech-3.3M-2024-01-01 0.05 5 compound []\ngigaspeech-3.3M-2024-01-01 0.05 5 negative []\ngigaspeech-3.3M-2024-01-01 0.05 5 stop-music []\nzh-en-3M-2025-12-20 0.25 1.5 wake-only []\nzh-en-3M-2025-12-20 0.25 1.5 wake-weather []\nzh-en-3M-2025-12-20 0.25 1.5 compound []\nzh-en-3M-2025-12-20 0.25 1.5 negative []\nzh-en-3M-2025-12-20 0.25 1.5 stop-music []\nzh-en-3M-2025-12-20 0.15 3 wake-only [('hey_pc', 0.93)]\nzh-en-3M-2025-12-20 0.15 3 wake-weather [('hey_pc', 0.93)]\nzh-en-3M-2025-12-20 0.15 3 compound [('hey_pc', 0.93)]\nzh-en-3M-2025-12-20 0.15 3 negative []\nzh-en-3M-2025-12-20 0.15 3 stop-music []\nzh-en-3M-2025-12-20 0.05 5 wake-only [('hey_pc', 0.77)]\nzh-en-3M-2025-12-20 0.05 5 wake-weather [('hey_pc', 0.77)]\nzh-en-3M-2025-12-20 0.05 5 compound [('hey_pc', 0.77)]\nzh-en-3M-2025-12-20 0.05 5 negative []\nzh-en-3M-2025-12-20 0.05 5 stop-music []\n","truncated":false,"exit_code":0,"wall_time_seconds":5.3}
+==> text 2/4 <==
+Successfully replaced 2 block(s) in internal/interpreter/interpreter.go.
+✓ Go clean · 2024ms
+==> text 3/4 <==
+Successfully replaced 1 block(s) in scripts/open-pi.sh.
+✓ Shell clean · 1988ms
+==> text 4/4 <==
+{"output":"?   \tai-pc/cmd/ai-pc\t[no test files]\nok  \tai-pc/internal/bookmarks\t(cached)\nok  \tai-pc/internal/bridge\t(cached)\nok  \tai-pc/internal/config\t(cached)\nok  \tai-pc/internal/desktop\t(cached)\nok  \tai-pc/internal/intent\t(cached)\nok  \tai-pc/internal/interpreter\t1.019s\n?   \tai-pc/internal/strictjson\t[no test files]\nok  \tai-pc/internal/wake\t(cached)\n\nopen browser and search on google for weather\nDry-run: open https://www.google.com/search?q=weather\n\nreal\t0m2.435s\nuser\t0m0.001s\nsys\t0m0.008s\n\nput on some music\nDry-run: media play\n\nreal\t0m0.558s\nuser\t0m0.002s\nsys\t0m0.003s\n\nopen browser and delete my files\nNo action: unsupported or ambiguous request.\n\nreal\t0m0.564s\nuser\t0m0.001s\nsys\t0m0.004s\n\nswitch over to the third workspace\nDry-run: workspace 3\n\nreal\t0m0.602s\nuser\t0m0.002s\nsys\t0m0.003s\n","truncated":false,"exit_code":0,"wall_time_seconds":6.1}

@@ -1,0 +1,127 @@
+# cmux / claude
+.fresh/
+.*
+# Allow repository metadata; GitHub workflows are forbidden by project policy.
+!.github/
+!.gitleaksignore
+
+# Historical/local coordination records; protocol contracts remain tracked.
+/plan/
+/review/
+.orchestration/tasks/
+.orchestration/results/
+
+# Node
+node_modules/
+dist/
+*.tsbuildinfo
+
+# Rust
+target/
+
+# NextJS
+.next/
+out/
+.vercel/
+
+# Flutter / Dart
+dockercache/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+build/
+.packages
+.pub-cache/
+.pub/
+
+# iOS
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+ios/Runner/GeneratedPluginRegistrant.*
+ios/Flutter/ephemeral/
+
+# Android
+android/.gradle/
+android/local.properties
+android/app/release/
+android/.kotlin/
+**/android/captures/
+**/android/gradlew
+**/android/gradlew.bat
+**/android/local.properties
+**/android/**/GeneratedPluginRegistrant.java
+
+# Editor
+.vscode/
+.idea/
+*.iml
+*.swp
+.DS_Store
+
+# Env / secrets
+.env
+.env.local
+.env.*
+!.env.example
+!.env.sample
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.p8
+id_rsa*
+id_dsa*
+id_ecdsa*
+id_ed25519*
+*.key
+*.pem
+
+# Build/download artifacts and caches (required source assets stay tracked)
+*.apk
+*.aab
+*.ipa
+*.dmg
+*.exe
+*.msi
+*.deb
+*.rpm
+*.zip
+*.tgz
+coverage/
+__pycache__/
+*.pyc
+rp-s3/data/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Test artifacts — pi-extension model-persist test writes a real settings.json
+pi-extension/test/.pi/
+
+# Per-cwd remote-pi runtime config (agent_name, auto_start_relay) — machine-local
+# state written by `remote-pi claude` / the wizard, never repo content. Matches
+# any `.pi/` dir at any depth (root, pi-extension/, subprojects).
+.pi/
+
+# Cockpit: tasks.json é versionado (config do Task Run); resto do .cockpit/ não
+!.cockpit/
+.cockpit/*
+!.cockpit/tasks.json
+graphify-out
+.cockpit/worktrees/
+
+# Material de divulgação (slides, PNGs exportados, copy de post). É conteúdo de
+# campanha, não do produto: muda por rede social e por publicação, e os PNGs
+# exportados são derivados dos .html. Fica local.
+marketing/
+
+openspec

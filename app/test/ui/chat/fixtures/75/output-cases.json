@@ -1,0 +1,84 @@
+[
+  {
+    "name": "multiline-literal-path",
+    "raw": "{\"output\":\"first\\n  second\\tindent\\n\\\\n C:\\\\Users\\\\name\",\"truncated\":false,\"exit_code\":0,\"wall_time_seconds\":1.5}",
+    "wrapper": {
+      "output": "first\n  second\tindent\n\\n C:\\Users\\name",
+      "truncated": false,
+      "exit_code": 0,
+      "wall_time_seconds": 1.5
+    },
+    "expected": "first\n  second\tindent\n\\n C:\\Users\\name"
+  },
+  {
+    "name": "reported-truncation-and-failure",
+    "raw": "{\"output\":\"available\\npartial output\",\"truncated\":true,\"exit_code\":2,\"wall_time_seconds\":2}",
+    "wrapper": {
+      "output": "available\npartial output",
+      "truncated": true,
+      "exit_code": 2,
+      "wall_time_seconds": 2
+    },
+    "expected": "Exit code 2 · Output truncated\navailable\npartial output"
+  },
+  {
+    "name": "unknown-json",
+    "raw": "{\"output\":\"one\\ntwo\"}"
+  },
+  {
+    "name": "string-code",
+    "raw": "{\"output\":\"one\\ntwo\",\"truncated\":false,\"exit_code\":\"0\",\"wall_time_seconds\":1}"
+  },
+  {
+    "name": "numeric-truncated",
+    "raw": "{\"output\":\"one\\ntwo\",\"truncated\":0,\"exit_code\":0,\"wall_time_seconds\":1}"
+  },
+  {
+    "name": "extra-key",
+    "raw": "{\"output\":\"one\\ntwo\",\"truncated\":false,\"exit_code\":0,\"wall_time_seconds\":1,\"extra\":1}"
+  },
+  {
+    "name": "negative-time",
+    "raw": "{\"output\":\"one\\ntwo\",\"truncated\":false,\"exit_code\":0,\"wall_time_seconds\":-1}"
+  },
+  {
+    "name": "plain",
+    "raw": "ordinary output\\nno rewrite"
+  },
+  {
+    "name": "malformed",
+    "raw": "{\"output\":\"a\\nb\""
+  },
+  {
+    "name": "repr",
+    "raw": "'Script completed\\nWall time 1 seconds\\nOutput:\\n\\n==> text 1/1 <==\\n{\"output\":\"a\\nb\"}'"
+  },
+  {
+    "name": "duplicate",
+    "raw": "{\"output\":\"x\",\"output\":\"y\",\"truncated\":false,\"exit_code\":0,\"wall_time_seconds\":1}"
+  },
+  {
+    "name": "pretty-equivalent",
+    "raw": "{\n  \"output\": \"first\\n  second\\tindent\\n\\\\n C:\\\\Users\\\\name\",\n  \"truncated\": false,\n  \"exit_code\": 0,\n  \"wall_time_seconds\": 1.5\n}",
+    "expected": "first\n  second\tindent\n\\n C:\\Users\\name"
+  },
+  {
+    "name": "spaced-equivalent",
+    "raw": " \n{\"output\": \"first\\n  second\\tindent\\n\\\\n C:\\\\Users\\\\name\", \"truncated\": false, \"exit_code\": 0, \"wall_time_seconds\": 1.5}\t\n",
+    "expected": "first\n  second\tindent\n\\n C:\\Users\\name"
+  },
+  {
+    "name": "unicode-key-and-newline-equivalent",
+    "raw": "{\"\\u006futput\":\"first\\u000a  second\\tindent\\n\\\\n C:\\\\Users\\\\name\",\"truncated\":false,\"exit_code\":0,\"wall_time_seconds\":1.5}",
+    "expected": "first\n  second\tindent\n\\n C:\\Users\\name"
+  },
+  {
+    "name": "escaped-equivalent-duplicate-key",
+    "raw": "{\"output\":\"x\",\"\\u006futput\":\"y\",\"truncated\":false,\"exit_code\":0,\"wall_time_seconds\":1}"
+  },
+  {
+    "name": "fake-property-text-and-escaped-slash",
+    "raw": "{\"output\":\"text }, {\\\"output\\\":\\\"fake\\\",\\\"exit_code\\\":2}, \\\\\\\"quoted\\\\\\\" literal \\\\n C:\\\\tmp\\nnext dir\\/file\",\"truncated\":false,\"exit_code\":0,\"wall_time_seconds\":1}",
+    "expected": "text }, {\"output\":\"fake\",\"exit_code\":2}, \\\"quoted\\\" literal \\n C:\\tmp\nnext dir/file"
+  }
+]

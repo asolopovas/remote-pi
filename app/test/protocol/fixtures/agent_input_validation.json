@@ -1,0 +1,14 @@
+[
+  {"cwd":"/project","valid":true},
+  {"cwd":"/project","name":"Reviewer","valid":true},
+  {"cwd":"/project","name":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","valid":true},
+  {"cwd":"/project","name":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","valid":false},
+  {"cwd":"/project","name":"","valid":false},
+  {"cwd":"/project","name":"   ","valid":false},
+  {"cwd":"/project","name":"bad\nname","valid":false},
+  {"cwd":"/project","name":"bad\u0085name","valid":false},
+  {"cwd":"/project","name":"bad\u009fname","valid":false},
+  {"cwd":"/project\u0085","valid":false},
+  {"cwd":"/project\u007f","valid":false},
+  {"cwd":"  ","valid":false}
+]

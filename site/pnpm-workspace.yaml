@@ -1,0 +1,5 @@
+allowBuilds:
+  sharp: true
+  unrs-resolver: true
+overrides:
+  'micromatch@4.0.8>braces': npm:@dieub/braces-depth-guard@3.0.3-pn.3

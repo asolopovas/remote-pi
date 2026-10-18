@@ -1,0 +1,9 @@
+__pycache__/
+.env
+acme-production/
+acme-staging/
+backups/
+images/
+nginx/
+tls/
+webroot/

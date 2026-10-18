@@ -1,0 +1,27 @@
+Script completed
+Wall time 1.7 seconds
+Output:
+==> text 1/2 <==
+## Review
+
+- **Correct:** The correction stays within the three findings and approved optional viewport capability. `bodyWrapWidth` defaults to null; only the composite tool card opts in (`app/lib/ui/chat/widgets/code_viewport.dart:22–34`; `tool_request_card.dart:177`). Existing default viewport behavior remains unchanged.
+
+- **Fixed — P1 outer Scroll:** Finite width is captured before horizontal scrolling and applied to nested frames (`tool_request_card.dart:100–102,202–234`). Stable body ancestry preserves nested disclosure/wrap state; returning to Wrap resets horizontal offset (`code_viewport.dart:57–60,151–171`). The regression exercises outer Scroll before/after disclosure, finite layout, state identity, offset and exact copying at 320px/2x (`app/test/ui/chat/codemode_preview_test.dart:26–205`).
+
+- **Fixed — P1 comment termination:** LF, CR, U+2028 and U+2029 now terminate line comments and are consumed as outside-literal whitespace (`codemode_preview.dart:32–45`). Tests verify unsupported following calls decline the whole script, while supported calls remain visible (`app/test/ui/chat/codemode_preview_static_test.dart:19–45`).
+
+- **Fixed — P2 extensionless highlighting:** Language inference now checks the basename’s extension after splitting Unix/Windows separators (`codemode_preview.dart:218–222`). Extensionless files and directory-only dots remain plain text (`codemode_preview_static_test.dart:48–86`).
+
+**No issues found.**
+
+### Evidence and verdict
+
+Retained correction evidence reproduces all three original failures, then records **57 focused / 606 full tests passed** and clean analyzer. Correction manifests contain the supplied helper/card/viewport hashes and corrected code22 SHA256:
+
+`ada9775762faaa67f59314d3ec58aa460829f345253a58e64b5ce47202e64068`
+
+Hashes and tests were not independently rerun. No concrete new regression was found in the correction blast radii.
+
+**Merge verdict: OK with notes.** The prior BLOCK is cleared for these findings. Parent-owned device replay remains pending.
+==> text 2/2 <==
+{"output":"ada9775762faaa67f59314d3ec58aa460829f345253a58e64b5ce47202e64068  app/build/75-readable/code22.apk\n74df2ae06c445e2b2215742c053064b4bc69803820659e250a6700114ed57f95  app/lib/ui/chat/widgets/codemode_preview.dart\n6c5d8652d3f36557a5e4dd118bf8748dc5bddfa97e5bcef3a2698b837935c1ad  app/lib/ui/chat/widgets/tool_request_card.dart\nb5af55c9a1c719e9a463bbca7b4a5f6d6a280280d81922c100cab61a2133003f  app/lib/ui/chat/widgets/code_viewport.dart\nSigner #1 certificate DN: C=US, O=Android, CN=Android Debug\nSigner #1 certificate SHA-256 digest: 44dc580c702f2757fb296c989608dad2826e12e771cc7e4364d50bd587c8516a\nSigner #1 certificate SHA-1 digest: 59c402fa776c0e370747913a7d6bac454b72d739\nSigner #1 certificate MD5 digest: c613e302a98af2df8a9b74fb0d763bc0\npackage: name='io.github.asolopovas.remotepi.readable' versionCode='22' versionName='1.2.0' platformBuildVersionName='16' platformBuildVersionCode='36' compileSdkVersion='36' compileSdkVersionCodename='16'\nsdkVersion:'34'\ndevice\n    versionCode=21 minSdk=34 targetSdk=36\n    versionName=1.2.0\n","truncated":false,"exit_code":0,"wall_time_seconds":1.6}

@@ -1,0 +1,6 @@
+include: package:flutter_lints/flutter.yaml
+
+# Upstream 7.4.0 predates this Flutter-lints rule; do not rewrite its provider.
+linter:
+  rules:
+    strict_top_level_inference: false

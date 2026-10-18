@@ -1,0 +1,97 @@
+[
+  {
+    "name": "double",
+    "source": "text(await tools.bash({command:\"first\\n  second\\tend\\\\n C:\\\\Users\\\\name \\\\\\\"q\\\\\\\" `tick`\",timeout:2}));",
+    "expected": "first\n  second\tend\\n C:\\Users\\name \\\"q\\\" `tick`"
+  },
+  {
+    "name": "single",
+    "source": "await tools.write({path:'a.py',content:'print(\\'x\\')\\n\\t# \\\\n C:\\\\tmp\\x21\\u263a'});",
+    "expected": "print('x')\n\t# \\n C:\\tmp!\u263a"
+  },
+  {
+    "name": "comments",
+    "source": "/* tools.bash({command:\"fake\"}); */ tools.bash({/* command:\"fake\" */ command:\"real\\nline\"}); // tools.edit({oldText:'fake'});",
+    "expected": "real\nline"
+  },
+  {
+    "name": "decline-0",
+    "source": "tools.bash({command:\"a\"+\"b\"});"
+  },
+  {
+    "name": "decline-1",
+    "source": "tools.bash({command:`a`});"
+  },
+  {
+    "name": "decline-2",
+    "source": "tools.bash({command:`a${x}`});"
+  },
+  {
+    "name": "decline-3",
+    "source": "tools.bash({command:x});"
+  },
+  {
+    "name": "decline-4",
+    "source": "tools.bash({[\"command\"]:\"x\"});"
+  },
+  {
+    "name": "decline-5",
+    "source": "tools.bash({...x,command:\"x\"});"
+  },
+  {
+    "name": "decline-6",
+    "source": "tools.unknown({command:\"x\"});"
+  },
+  {
+    "name": "decline-7",
+    "source": "const r=/tools.bash({command:\"fake\"})/;"
+  },
+  {
+    "name": "decline-8",
+    "source": "if(x) /tools.bash({command:\"fake\"})/.test(x);"
+  },
+  {
+    "name": "decline-9",
+    "source": "\"tools.bash({command:\\\"fake\\\"});\";"
+  },
+  {
+    "name": "decline-10",
+    "source": "tools.bash({command:\"\\q\"});"
+  },
+  {
+    "name": "decline-11",
+    "source": "tools.bash({command:\"\\uZZZZ\"});"
+  },
+  {
+    "name": "decline-12",
+    "source": "tools.bash({command:\"\\x0\"});"
+  },
+  {
+    "name": "decline-13",
+    "source": "tools.bash({command:\"\\0\"});"
+  },
+  {
+    "name": "decline-14",
+    "source": "tools.bash({command:\"x\",command:\"y\"});"
+  },
+  {
+    "name": "decline-15",
+    "source": "tools.bash({command:\"x\"}); tools.edit({path:\"a\",edits:[{oldText:\"a\",newText:other}]});"
+  },
+  {
+    "name": "decline-16",
+    "source": "tools.bash({command:\"x\"}); /* unfinished"
+  },
+  {
+    "name": "decline-17",
+    "source": "tools.bash({command:\"x\","
+  },
+  {
+    "name": "decline-18",
+    "source": "tools.bash({command:12});"
+  },
+  {
+    "name": "decline-19",
+    "source": "tools.edit({path:\"a\",edits:[]});"
+  }
+]

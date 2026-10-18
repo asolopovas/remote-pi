@@ -1,0 +1,90 @@
+[
+  {
+    "case": "legacy hello",
+    "frame": {
+      "type": "hello",
+      "pubkey": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+      "room_id": "0123456789ab",
+      "room_meta": {
+        "name": "routing-agent",
+        "cwd": "/synthetic/duplicate"
+      }
+    }
+  },
+  {
+    "case": "initial display hello",
+    "frame": {
+      "type": "hello",
+      "pubkey": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+      "room_id": "0123456789ab",
+      "room_meta": {
+        "name": "routing-agent",
+        "cwd": "/synthetic/duplicate",
+        "display": {
+          "native_session_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "epoch": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "revision": 0,
+          "name": null
+        }
+      }
+    }
+  },
+  {
+    "case": "rename",
+    "frame": {
+      "type": "room_meta_update",
+      "room_id": "0123456789ab",
+      "meta": {
+        "display": {
+          "native_session_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "epoch": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "revision": 1,
+          "name": "Pi · system"
+        }
+      }
+    }
+  },
+  {
+    "case": "reset tombstone",
+    "frame": {
+      "type": "room_meta_update",
+      "room_id": "0123456789ab",
+      "meta": {
+        "display": {
+          "native_session_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "epoch": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "revision": 2,
+          "name": null
+        }
+      }
+    }
+  },
+  {
+    "case": "reconnect cached exact identity",
+    "frame": {
+      "type": "hello",
+      "pubkey": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+      "room_id": "0123456789ab",
+      "room_meta": {
+        "name": "routing-agent",
+        "cwd": "/synthetic/duplicate",
+        "display": {
+          "native_session_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "epoch": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "revision": 2,
+          "name": null
+        }
+      }
+    }
+  },
+  {
+    "case": "unrelated patch preserves display at consumer",
+    "frame": {
+      "type": "room_meta_update",
+      "room_id": "0123456789ab",
+      "meta": {
+        "working": false
+      }
+    }
+  }
+]

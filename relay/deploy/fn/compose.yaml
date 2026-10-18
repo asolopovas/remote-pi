@@ -1,0 +1,64 @@
+---
+name: remote-pi-relay
+services:
+  relay:
+    image: ${RELAY_IMAGE:?Set the locally built sha256 image ID}
+    pull_policy: never
+    user: "10001:10001"
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    environment:
+      REMOTEPI_MESH_DB_PATH: /data/mesh.db
+      RUST_LOG: error
+    volumes:
+      - data:/data
+    networks: [backend]
+    mem_limit: 512m
+    cpus: 1.0
+    pids_limit: 128
+    logging: &logging
+      driver: json-file
+      options: {max-size: "5m", max-file: "3"}
+  proxy:
+    image: >-
+      nginx:1.28-alpine@sha256:a8b39bd9cf0f83869a2162827a0caf6137ddf759d50a171451b335cecc87d236
+    user: "101:101"
+    entrypoint: [nginx]
+    command: [-g, "daemon off;"]
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    ports:
+      - "173.208.50.216:80:8080"
+      - "173.208.50.216:443:8443"
+    volumes:
+      - ./nginx:/etc/nginx:ro
+      - ./tls:/etc/relay-tls:ro
+      - ./webroot:/var/www/acme:ro
+    tmpfs:
+      - "/tmp:rw,noexec,nosuid,size=32m,uid=101,gid=101,mode=700"
+    networks: [frontend, backend]
+    mem_limit: 128m
+    cpus: 0.5
+    pids_limit: 64
+    healthcheck:
+      test: [CMD, nginx, -t]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    logging: *logging
+networks:
+  frontend:
+    driver_opts:
+      com.docker.network.bridge.name: rpi-front
+  backend:
+    internal: true
+    driver_opts:
+      com.docker.network.bridge.name: rpi-back
+volumes:
+  data:
+    name: remote-pi-relay-data
+    external: true

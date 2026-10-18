@@ -1,0 +1,1 @@
+package org.json; import java.util.*; public class JSONArray {private final List<Object> values=new ArrayList<>();public JSONArray put(Object v){values.add(v);return this;}public String toString(){return values.toString();} }

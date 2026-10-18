@@ -1,0 +1,17 @@
+[Unit]
+Description=Renew Remote Pi short-lived IP certificate and reload nginx
+Requires=docker.service
+After=docker.service network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/remote-pi-relay
+ExecStart=/opt/remote-pi-relay/renew.sh
+TimeoutStartSec=20min
+UMask=0077
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/opt/remote-pi-relay /run/lock
+NoNewPrivileges=true

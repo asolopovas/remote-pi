@@ -1,0 +1,9 @@
+# Reviewed historical test fixtures only (not production credentials).
+# SSH fixture keys must never be authorized on a real system.
+b10196294d0832d022c06e92d84e31f5cd907ca2:cockpit/test/data/db_secrets_migration_test.dart:generic-api-key:66
+b10196294d0832d022c06e92d84e31f5cd907ca2:cockpit/test/data/db_secrets_migration_test.dart:generic-api-key:77
+e55a4caa7a5401e22587a50ca87feaa96aad12e1:cockpit/test/fixtures/ssh/encrypted_ed25519:private-key:1
+e55a4caa7a5401e22587a50ca87feaa96aad12e1:cockpit/test/fixtures/ssh/plain_ed25519:private-key:1
+e55a4caa7a5401e22587a50ca87feaa96aad12e1:cockpit/test/fixtures/ssh/encrypted_rsa:private-key:1
+3587db4cb7b91387440a9d6391b73e8776d11197:.orchestration/contracts/fixtures/pair_request.jsonl:generic-api-key:1
+3587db4cb7b91387440a9d6391b73e8776d11197:app/test/protocol_test.dart:generic-api-key:143

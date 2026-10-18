@@ -1,0 +1,15 @@
+{
+  "requests": [
+    {"type":"agent_list","id":"list-1"},
+    {"type":"agent_launch","id":"launch-1","launcher_id":"launcher-1","cwd":"/projects/pi","name":"Phone agent"},
+    {"type":"agent_launch","id":"launch-2","launcher_id":"launcher-1","cwd":"/projects/pi"},
+    {"type":"agent_stop","id":"stop-1","agent_id":"agent-1"}
+  ],
+  "replies": [
+    {"type":"agent_list_result","in_reply_to":"list-1","available":true,"launcher_id":"launcher-1","cwd":"/projects/pi","max_agents":4,"agents":[]},
+    {"type":"agent_list_result","in_reply_to":"list-2","available":false,"reason":"Managed children cannot launch agents","cwd":"/projects/pi","max_agents":4,"agents":[]},
+    {"type":"agent_launch_result","in_reply_to":"launch-1","agent":{"agent_id":"agent-1","name":"Phone agent-1","cwd":"/projects/pi","room_id":"room-agent-1","state":"running"}},
+    {"type":"agent_stop_result","in_reply_to":"stop-1","agent":{"agent_id":"agent-1","name":"Phone agent-1","cwd":"/projects/pi","room_id":"room-agent-1","state":"stopped"}},
+    {"type":"error","in_reply_to":"launch-2","code":"invalid_message","message":"Directory does not exist"}
+  ]
+}

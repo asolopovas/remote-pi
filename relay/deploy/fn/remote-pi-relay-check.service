@@ -1,0 +1,14 @@
+[Unit]
+Description=Verify Remote Pi trusted HTTPS and certificate expiry safety window
+Requires=docker.service
+After=docker.service network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/opt/remote-pi-relay/check.sh
+TimeoutStartSec=60s
+UMask=0077
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+NoNewPrivileges=true
